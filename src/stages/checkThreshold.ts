@@ -23,10 +23,13 @@ export const checkThreshold = (
     const cwd = joinPaths(process.cwd(), workingDirectory);
     // Maybe somehow take this from "format" stage?
     const coverageDetailMap = Object.fromEntries(
-        Object.entries(getFileCoverageMap(report)).map(([key, value]) => [
-            key.substring(cwd.length + 1),
-            value,
-        ])
+        Object.entries(getFileCoverageMap(report)).map(([key, value]) => {
+            console.log('🍇 key', key);
+            const selectedSubstring = key.substring(cwd.length + 1);
+            console.log('🍇 selectedSubstring', selectedSubstring);
+
+            return [selectedSubstring, value];
+        })
     );
 
     const dirSet = new Set<string>();
