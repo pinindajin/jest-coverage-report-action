@@ -27,6 +27,8 @@ export const createReport = (
     options: Options,
     thresholdResults: ThresholdResult[]
 ): SummaryReport => {
+    console.log('🐙 options', options);
+    console.log('🐙 thresholdResults', thresholdResults);
     const { workingDirectory, customTitle } = options;
 
     const { errors, data } = dataCollector.get();

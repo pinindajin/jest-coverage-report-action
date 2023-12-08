@@ -156,6 +156,8 @@ export const run = async (
         'checkThreshold',
         dataCollector,
         async (skip) => {
+            console.log('🍙 isHeadCoverageGenerated', isHeadCoverageGenerated);
+            console.log('🍙 isThresholdParsed', isThresholdParsed);
             if (!isHeadCoverageGenerated || !isThresholdParsed) {
                 skip();
             }
@@ -168,6 +170,8 @@ export const run = async (
             );
         }
     );
+
+    console.log('🍇 thresholdResults', thresholdResults);
 
     const [isReportContentGenerated, summaryReport] = await runStage(
         'generateReportContent',
