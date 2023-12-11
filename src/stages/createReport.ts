@@ -27,22 +27,50 @@ export const createReport = (
     options: Options,
     thresholdResults: ThresholdResult[]
 ): SummaryReport => {
+    console.log('🐙 dataCollector', dataCollector);
     console.log('🐙 options', options);
     console.log('🐙 thresholdResults', thresholdResults);
     const { workingDirectory, customTitle } = options;
 
     const { errors, data } = dataCollector.get();
+
+    console.log('🐙 data, errors', data, errors);
+
     const [headReport, baseReport] = data;
+
+    console.log('🐙 headReport, baseReport', headReport, baseReport);
+
     const formattedErrors = formatErrors(errors);
 
+    console.log('🐙 formattedErrors', formattedErrors);
+
     const formattedThresholdResults = formatThresholdResults(thresholdResults);
+
+    console.log('🐙 formattedThresholdResults', formattedThresholdResults);
+
     const coverage = formatCoverage(headReport, baseReport, undefined, false);
+
+    console.log('🐙 coverage', coverage);
+
+    const summary = getTestRunSummary(headReport);
+
+    console.log('🐙 summary', summary);
+
+    const reportFailures = getFailureDetails(headReport);
+
+    console.log('🐙 reportFailures', reportFailures);
+
     const runReport: TestRunReport = {
         title: i18n(headReport.success ? 'testsSuccess' : 'testsFail'),
-        summary: getTestRunSummary(headReport),
-        failures: getFailureDetails(headReport),
+        summary,
+        failures: reportFailures,
     };
+
+    console.log('🐙 runReport', runReport);
+
     const formattedReport = formatRunReport(runReport);
+
+    console.log('🐙 formattedReport', formattedReport);
 
     let templateText = insertArgs(template, {
         body: [
@@ -59,13 +87,26 @@ export const createReport = (
         sha: getSha(),
     });
 
+    console.log('🐙 templateText', templateText);
+
     if (templateText.length > GITHUB_MESSAGE_SIZE_LIMIT) {
+        console.log('🦄 message too big');
         const reducedCoverage = formatCoverage(
             headReport,
             baseReport,
             undefined,
             true
         );
+
+        console.log('🐙 reducedCoverage', reducedCoverage);
+
+        const title = insertArgs(customTitle || i18n('summaryTitle'), {
+            dir: workingDirectory ? `for \`${workingDirectory}\`` : '',
+        });
+
+        console.log('🐙 title', title);
+
+        const tag = getReportTag(options);
 
         templateText = insertArgs(template, {
             body: [
@@ -75,12 +116,12 @@ export const createReport = (
                 formattedReport,
             ].join('\n'),
             dir: workingDirectory || '',
-            tag: getReportTag(options),
-            title: insertArgs(customTitle || i18n('summaryTitle'), {
-                dir: workingDirectory ? `for \`${workingDirectory}\`` : '',
-            }),
+            tag,
+            title,
             sha: getSha(),
         });
+
+        console.log('🐙 templateText', templateText);
     }
 
     return {
