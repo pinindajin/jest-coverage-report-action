@@ -34,11 +34,11 @@ export const createReport = (
 
     const { errors, data } = dataCollector.get();
 
-    console.log('🐙 data, errors', data, errors);
+    console.log('🐙 data, errors', data.length, errors);
 
     const [headReport, baseReport] = data;
 
-    console.log('🐙 headReport, baseReport', headReport, baseReport);
+    // console.log('🐙 headReport, baseReport', ObjectheadReport, baseReport);
 
     const formattedErrors = formatErrors(errors);
 
