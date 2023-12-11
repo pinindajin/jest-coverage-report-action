@@ -20,7 +20,7 @@ export const checkThreshold = (
     workingDirectory: string | undefined,
     dataCollector: DataCollector<unknown>
 ) => {
-    console.log('🍇 report', report);
+    // console.log('🍇 report', report);
     console.log('🍇 threshold', threshold);
     console.log('🍇 workingDirectory', workingDirectory);
 
